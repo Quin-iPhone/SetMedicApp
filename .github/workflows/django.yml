@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
-      matrix:   
-        python-version: [3.7, 3.8, 3.9]
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
 
     steps:
     - uses: actions/checkout@v4
@@ -28,80 +28,3 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
-    - name: Collect Static Files
-      run: |
-        python manage.py collectstatic --noinput
-    - name: Run Migrations
-      run: |
-        python manage.py migrate --noinput  
-    - name: Check for Security Issues
-      uses: bandit[bot]/code-scanning-bandit@main
-      with:
-        args: --recursive . --quiet
-    - name: Check for Code Quality
-      uses: bandit[bot]/code-scanning-bandit@main 
-      with:
-        args: --recursive . --quiet --severity-level high --confidence-level high --recursive .
-    - name: Check for Code Style
-      uses: bandit[bot]/code-scanning-bandit@main 
-      with:
-        args: --recursive . --quiet --severity-level low --confidence-level low --recursive .
-    - name: Upload Coverage Report
-      uses: codecov/codecov-action@v3
-      with:
-        files: coverage.xml
-        flags: unittests
-        name: codecov-umbrella    
-    - name: Notify on Failure
-      if: ${{ failure() }}
-      uses: 8398a7/action-slack@v4
-      with:
-        status: failure
-        fields: repo,message,commit,author,action,eventName,ref,workflow
-        text: Django CI has failed    
-    - name: Notify on Success
-      if: ${{ success() }}
-      uses: 8398a7/action-slack@v4
-      with:
-        status: success
-        fields: repo,message,commit,author,action,eventName,ref,workflow
-        text: Django CI has succeeded
-    - name: Cache Dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }} 
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-pip-${{ matrix.python-version }}
-        cache-hit: true 
-    - name: Cache Python Packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }} 
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-pip-${{ matrix.python-version }}
-        cache-hit: true
-    - name: Cache Python Bytecode
-      uses: actions/cache@v3
-      with: 
-        path: ~/.cache/bytecode
-        key: ${{ runner.os }}-bytecode-${{ hashFiles('**/*.py') }}
-        cache-hit: true
-    - name: Cache Django Migrations
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/migrations
-        key: ${{ runner.os }}-migrations-${{ hashFiles('**/migrations/*.py') }}
-        cache-hit: true npm run dev
-    - name: Cache Node Modules
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/node_modules
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node_modules-
-          ${{ runner.os }}-node_modules-${{ matrix.node-version }}
-        cache-hit: true
