@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # This is required for actions/checkout
+      contents: read # Required for actions/checkout
 
     steps:
       # Step 1: Checkout the repository code
@@ -26,22 +26,22 @@ jobs:
       - name: Set up virtual environment and install dependencies
         run: |
           python -m venv venv
-          source venv/bin/activate
+          source ./venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
 
       # Step 4: Run tests to validate the application
       - name: Run tests
         run: |
-          source venv/bin/activate
-          pytest || echo "Tests failed!" # Notify if tests fail
+          source ./venv/bin/activate
+          pytest --verbose || { echo "Tests failed! Check pytest output for details."; exit 1; }
 
       # Step 5: Package the application files into a zip artifact
       - name: Zip artifact for deployment
         run: |
-          zip -r release.zip . -x "venv/*" ".github/*" "*.git*" "tests/*"
+          zip -r release.zip . -x "venv/*" ".github/*" "*.git*" "tests/*" "*.DS_Store"
 
-      # Step 6: Upload the artifact for deployment
+      # Step 6: Upload the artifact for deployment jobs
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
@@ -82,7 +82,18 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
         continue-on-error: true # Allow workflow to proceed if deployment fails
 
-      # Step 5: Handle deployment errors (Optional)
+      # Step 5: Validate deployment (Optional)
+      - name: Validate deployment
+        run: |
+          if [ -n "${{ steps.deploy-to-webapp.outputs.webapp-url }}" ]; then
+            curl -f ${{ steps.deploy-to-webapp.outputs.webapp-url }} || echo "Validation failed! Application may not be running."
+          else
+            echo "No deployment URL found. Skipping validation."
+          fi
+
+      # Step 6: Notify deployment status if failed
       - name: Notify deployment status
         if: failure()
-              run: echo "Deployment failed! Please check the logs."
+        run: |
+          echo "Deployment failed! Please check the logs."
+          echo "Logs can be reviewed in the Actions console under the deploy job."
