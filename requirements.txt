@@ -1,0 +1,106 @@
+import os
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# Models
+class Service(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    snippet = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.String(20), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+# Routes
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/services')
+def services_page():
+    services = Service.query.all()
+    return render_template('services.html', services=services)
+
+@app.route('/quote', methods=['GET', 'POST'])
+def quote():
+    services = Service.query.all()
+    if request.method == 'POST':
+        invoice = {
+            "invoice_number": "INV20250617",
+            "name": request.form['name'],
+            "company": request.form['company'],
+            "service": Service.query.get(request.form['service']),
+            "total_amount": Service.query.get(request.form['service']).price
+        }
+        return render_template('invoice.html', invoice=invoice)
+    return render_template('quote.html', services=services)
+
+@app.route('/payment', methods=['GET', 'POST'])
+def payment():
+    invoice = {
+        "invoice_number": "INV20250617",
+        "total_amount": 150
+    }
+    if request.method == 'POST':
+        receipt = {
+            "receipt_number": "RCPT20250617",
+            "name": "John Doe",
+            "company": "Set Medic South Africa",
+            "service": {"name": "On-Set Medic"},
+            "total_amount": invoice["total_amount"]
+        }
+        return render_template('receipt.html', receipt=receipt)
+    return render_template('payment.html', invoice=invoice)
+
+@app.route('/blog')
+def blog():
+    posts = BlogPost.query.all()
+    return render_template('blog.html', posts=posts)
+
+@app.route('/blog/<int:post_id>')
+def blog_detail(post_id):
+    post = BlogPost.query.get(post_id)
+    return render_template('blog_detail.html', post=post)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# Save the logo image to static/img/logo.png
+logo_image_data = b'...'  # Replace with actual image data
+os.makedirs('static/img', exist_ok=True)
+with open('static/img/logo.png', 'wb') as f:
+    f.write(logo_image_data)
+
+# Update requirements.txt to include flask_sqlalchemy
+with open('requirements.txt', 'a') as f:
+    f.write('\nflask_sqlalchemy\n')
+
+# Create a .env file with the necessary environment variables
+env_content = """FLASK_ENV=production
+SECRET_KEY=bK9$z@1!fQw7^LrT#Xe3pVj8ZsM0uBnY
+DATABASE_URL=postgresql://your_db_username:your_db_password@your_db_host/setmedicapp
+"""
+with open('.env', 'w') as f:
+    f.write(env_content)
+
+# Package the updated project into a zip file
+import shutil
+shutil.make_archive('set_medic_app', 'zip', '.')
+
+print("The project has been updated and packaged into 'set_medic_app.zip'.")
