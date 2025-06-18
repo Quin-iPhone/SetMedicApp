@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: SetMedicApp
+    runtime: docker
+    plan: free
+    region: ohio
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        value: bK9$z@1!fQw7^LrT#Xe3pVj8ZsM0uBnY
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        value: postgresql://your_db_username:your_db_password@your_db_host/setmedicsa
+    autoDeploy: true
+    domains:
+      - www.setmedicsa.comAdd commentMore actions
+      - setmedicsa.com
