@@ -18,7 +18,6 @@ venv.bak/
 *.egg
 *.egg-info/
 dist/
-build/
 *.egg-info/
 
 # Flask specific
@@ -36,8 +35,6 @@ instance/
 .env.*
 
 # Docker
-Dockerfile
-docker-compose.yml
 
 # IDEs and editors
 .vscode/
