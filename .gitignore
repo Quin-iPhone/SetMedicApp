@@ -35,6 +35,8 @@ instance/
 .env.*
 
 # Docker
+.Dockerfile
+.docker-compose.yml
 
 # IDEs and editors
 .vscode/
