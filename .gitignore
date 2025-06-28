@@ -1,61 +1,35 @@
-# Create a .gitignore file with the necessary exclusions
-gitignore_content = """
-# Byte-compiled / optimized / DLL files
+# Python
+*.pyc
+*.pyo
 __pycache__/
-*.py[cod]
-*$py.class
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-env/
+# Virtual environments
 venv/
-ENV/
-env.bak/
-venv.bak/
-*.egg
-*.egg-info/
-dist/
-*.egg-info/
 
-# Flask specific
-instance/
-.webassets-cache
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
 
-# Pytest
-.pytest_cache/
-
-# MyPy
-.mypy_cache/
-
-# Environments
-.env
-.env.*
-
-# Docker
-.Dockerfile
-.docker-compose.yml
-
-# IDEs and editors
-.vscode/
-.idea/
-*.swp
-*.swo
-*.swn
-*.bak
-*.tmp
-*.orig
+# Logs and temporary files
 *.log
+*.tmp
 
-# OS generated files
-.DS_Store
-Thumbs.db
-"""
+# Coverage reports
+coverage.xml
 
-# Write the .gitignore file
-with open('.gitignore', 'w') as f:
-    f.write(gitignore_content)
+# Build directories
+build/
 
-print(".gitignore file has been created successfully.")
+# Distribution packages
+dist/
+
+# Pip cache
+pip-wheel-metadata/
+
+# Environment variable files
+.env
+
+# IDE specific files
+.idea/
+
+# Python egg files
+*.egg

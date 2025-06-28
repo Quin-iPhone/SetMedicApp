@@ -1,0 +1,40 @@
+bK9$z@1!fQw7^LrT#Xe3pVj8ZsM0uBnY
+set-medic-app/
+│
+├── app.py
+├── requirements.txt
+├── env.txt
+├── .gitignore
+├── README.md
+│
+├── static/
+│   └── style.css
+├── templates/
+│   └── index.html
+├── routes/
+│   └── __init__.py
+├── models/
+│   └── __init__.py
+│└── utils/
+    └── __init__.py
+# set-medic-app
+# set-medic-app/
+# A simple Flask application for Set Medic SA
+# Author: Quinton Milligan
+# Email: quinton@setmedicsa.com
+# Version: 1.0
+# Description: This application provides a basic structure for a Flask web application, including routes, models, and utilities.
+# It is designed to be a starting point for further development and customization.
+# Usage: Run the application using `python app.py` and access it at `http://localhost:5000`
+# License: MIT License
+# set-medic-app
+# set-medic-app/
+# A simple Flask application for Set Medic SA
+# Author: Quinton Milligan
+# Email: quinton@setmedicsa.com
+# Version: 1.0
+# Description: This application provides a basic structure for a Flask web application, including routes, models, and utilities.
+# It is designed to be a starting point for further development and customization.
+# Usage: Run the application using `python app.py` and access it at `http://localhost:5000`
+# License: MIT License
+# set-medic-app

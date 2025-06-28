@@ -1,0 +1,22 @@
+services:
+  setmedicapp:
+    image: setmedicapp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 5000:5000
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://user:password@db/setmedicapp
+
+  db:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=setmedicapp
+    volumes:

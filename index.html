@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Medic App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Optional: Add or move to static/style.css for more styling */
+        body { font-family: Arial, sans-serif; text-align: center; margin: 0; background: #f4f4f4;}
+        .service-list { margin: 30px auto; max-width: 400px; }
+        .service { background: #fff; margin-bottom: 20px; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.07);}
+        .service button, .view-all-btn { margin-top: 10px; padding: 10px 24px; background: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer;}
+        .contact { background: #fff; margin: 30px auto 0; max-width: 400px; padding: 20px; border-radius: 8px;}
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #222; color: #fff; display: flex; justify-content: space-around; padding: 10px 0;}
+        .nav-bar span { font-size: 1rem; }
+        @media (max-width: 500px) {
+            .service-list, .contact { max-width: 98vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="service-list">
+        <div class="service">
+            <h2>Emergency Readiness</h2>
+            <p>Event, Production<br>Location: Service Dependant</p>
+            <button>Book</button>
+        </div>
+        <div class="service">
+            <h2>Risk Assessment</h2>
+            <p>Event, Production<br>Location: Service Dependant</p>
+            <button>Book</button>
+        </div>
+        <div class="service">
+            <h2>Health and Safety</h2>
+            <p>Event, Production<br>Location: Dependant on Service</p>
+            <button>Book</button>
+        </div>
+        <button class="view-all-btn">View All Services</button>
+    </div>
+
+    <div class="contact">
+        <h3>Contact us</h3>
+        <p>On-Set Medical Care and ...</p>
+    </div>
+
+    <div class="nav-bar">
+        <span>My Sites</span>
+        <span>Chat</span>
+        <span>Discover</span>
+        <span>Manage</span>
+        <span>My Profile</span>
+    </div>
+
+    <script>
+        // Optional: Add JavaScript for interactivity
+        document.querySelectorAll('.service button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Booking feature is not yet implemented.');
+            });
+        });
+
+        document.querySelector('.view-all-btn').addEventListener('click', () => {
+            alert('View All Services feature is not yet implemented.');
+        });
+    </script>
+</body>
+</html>
